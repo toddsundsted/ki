@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--JBuilder XML Project-->
+<project>
+  <property category="idl" name="ProcessIDL" value="false" />
+  <property category="jbuilder.debug" name="NoTracingClasses.1" value=",java.*,1" />
+  <property category="jbuilder.debug" name="NoTracingClasses.10" value=",com.borland.jbuilder.runtime,1" />
+  <property category="jbuilder.debug" name="NoTracingClasses.11" value=",com.inprise.vbroker,1" />
+  <property category="jbuilder.debug" name="NoTracingClasses.12" value=",com.visigenic,1" />
+  <property category="jbuilder.debug" name="NoTracingClasses.13" value=",org.omg,1" />
+  <property category="jbuilder.debug" name="NoTracingClasses.2" value=",javax.*,1" />
+  <property category="jbuilder.debug" name="NoTracingClasses.3" value=",sun.*,1" />
+  <property category="jbuilder.debug" name="NoTracingClasses.4" value=",com.sun.*,1" />
+  <property category="jbuilder.debug" name="NoTracingClasses.5" value=",com.borland.jbcl,1" />
+  <property category="jbuilder.debug" name="NoTracingClasses.6" value=",com.borland.sql,1" />
+  <property category="jbuilder.debug" name="NoTracingClasses.7" value=",com.borland.dbswing,1" />
+  <property category="jbuilder.debug" name="NoTracingClasses.8" value=",com.borland.datastore,1" />
+  <property category="jbuilder.debug" name="NoTracingClasses.9" value=",com.borland.dx,1" />
+  <property category="runtime.0" name="RunnableType" value="com.borland.jbuilder.runtime.ApplicationRunner" />
+  <property category="runtime.0" name="jsprunner.docbase" value="." />
+  <property category="runtime.0" name="jsprunner.jspfile" value="../JBuilder/bin" />
+  <property category="runtime.0" name="jsprunner.keepgenerated" value="" />
+  <property category="sys" name="Author" value="" />
+  <property category="sys" name="BeansInstantiate" value="false" />
+  <property category="sys" name="BraceStyle" value="1" />
+  <property category="sys" name="ClassPath" value="" />
+  <property category="sys" name="Company" value="" />
+  <property category="sys" name="Copyright" value="Copyright (c) " />
+  <property category="sys" name="CvsAutosaveEnabled" value="1" />
+  <property category="sys" name="CvsModule" value="Default" />
+  <property category="sys" name="CvsRepository" value="/home/cvs" />
+  <property category="sys" name="CvsServer" value="din" />
+  <property category="sys" name="CvsUseLocalConnection" value="0" />
+  <property category="sys" name="CvsUsername" value="nobody" />
+  <property category="sys" name="Deprecations" value="0" />
+  <property category="sys" name="Description" value="" />
+  <property category="sys" name="DocPath" value="" />
+  <property category="sys" name="EventMatch" value="false" />
+  <property category="sys" name="EventStyle" value="1" />
+  <property category="sys" name="InstanceVisibility" value="0" />
+  <property category="sys" name="JDK" value="java version &quot;1.2.2&quot;" />
+  <property category="sys" name="LastTag" value="0" />
+  <property category="sys" name="Libraries" value="" />
+  <property category="sys" name="OutPath" value="classes" />
+  <property category="sys" name="ShowWarnings" value="0" />
+  <property category="sys" name="SourcePath" value="src" />
+  <property category="sys" name="Title" value="" />
+  <property category="sys" name="Version" value="1.0" />
+  <file path="src/com/etcee/app/ki/agent/Agent.java" />
+  <file path="src/com/etcee/app/ki/server/AgentClassLoader.java" />
+  <file path="src/com/etcee/app/ki/agent/AgentContext.java" />
+  <file path="src/com/etcee/app/ki/server/AgentContextImplementation.java" />
+  <file path="src/com/etcee/app/ki/agenthost/AgentDefinitionException.java" />
+  <file path="src/com/etcee/app/ki/agenthost/AgentException.java" />
+  <file path="src/com/etcee/app/ki/agenthost/AgentHost.java" />
+  <file path="src/com/etcee/app/ki/server/AgentHostImplementation.java">
+    <property category="generated" name="JavaSoft.rmic.0" value="com/etcee/app/ki/server/AgentHostImplementation_Stub.java" />
+    <property category="generated" name="JavaSoft.rmic.1" value="com/etcee/app/ki/server/AgentHostImplementation_Skel.java" />
+    <property category="idl" name="GenerateRMI" value="true" />
+  </file>
+  <file path="src/com/etcee/app/ki/agent/AgentIdentity.java" />
+  <file path="src/com/etcee/app/ki/server/AgentLockedException.java" />
+  <file path="src/com/etcee/app/ki/agenthost/AgentNotFoundException.java" />
+  <file path="src/com/etcee/app/ki/server/AgentRoot.java" />
+  <file path="src/com/etcee/app/ki/server/AgentWrapper.java" />
+  <file path="src/com/etcee/app/ki/ki.properties" />
+  <file path="src/com/etcee/app/ki/Main.java" />
+  <file path="src/com/etcee/app/ki/agent/Message.java" />
+  <file path="src/com/etcee/app/ki/agenthost/MessageFailedException.java" />
+  <file path="src/com/etcee/app/ki/agent/MessageResponse.java" />
+  <file path="src/com/etcee/app/ki/server/Monitor.java" />
+  <file path="src/com/etcee/app/ki/server/Repository.java" />
+  <file path="src/com/etcee/app/ki/server/RepositoryEntry.java" />
+  <file path="src/com/etcee/app/ki/server/RepositoryException.java" />
+  <file path="src/com/etcee/app/ki/agenthost/Response.java" />
+  <file path="src/com/etcee/app/ki/server/ServerData.java" />
+  <file path="src/com/etcee/app/ki/agenthost/TransferFailedException.java" />
+  <file path="src/com/etcee/app/ki/agent/TransferResponse.java" />
+  <file path="src/com/etcee/app/ki/agenthost/Voucher.java" />
+  <file path="src/Wrapper.java" />
+</project>
+
