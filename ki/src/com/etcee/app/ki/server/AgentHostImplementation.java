@@ -271,27 +271,55 @@ public class AgentHostImplementation
 
     AgentClassLoader agentclassloader = new AgentClassLoader(fileResource);
 
-    Class c = agentclassloader.loadClass("");
+//    Class c = agentclassloader.loadClass("");
 
-    AgentWrapper agentwrapper = (AgentWrapper)c.newInstance();
+//    AgentWrapper agentwrapper = (AgentWrapper)c.newInstance();
 
-    agentwrapper.initialize(this, serverdata);
+//    agentwrapper.initialize(this, serverdata);
+
+    AgentWrapper agentwrapper = new AgentWrapper()
+    {
+      protected
+      void
+      load(ObjectInputStream objectinputstream)
+      throws IOException,
+             AgentDefinitionException,
+             IllegalAccessException,
+             InstantiationException,
+             ClassNotFoundException,
+             ClassCastException
+      {
+      }
+
+      protected
+      void
+      unload(ObjectOutputStream objectoutputstream)
+      throws IOException
+      {
+      }
+    };
 
     if (fileData.exists())
     {
       FileInputStream fileinputstream =
         new FileInputStream(fileData);
 
-      ObjectInputStream objectinputstream =
-        new ObjectInputStream(fileinputstream);
+//      ObjectInputStream objectinputstream =
+//        new ObjectInputStream(fileinputstream);
 
-      agentwrapper.load(objectinputstream);
+      AgentObjectInputStream agentobjectinputstream =
+        new AgentObjectInputStream(agentclassloader, fileinputstream);
 
-      objectinputstream.close();
+//      agentwrapper.load(objectinputstream);
+
+      agentobjectinputstream.readObject();
+
+      agentobjectinputstream.close();
     }
     else
     {
-      agentwrapper.load(null);
+      agentclassloader.loadClass("Main").newInstance();
+//      agentwrapper.load(null);
     }
 
     AgentIdentity agentidentity = agentwrapper.getAgentIdentity();
@@ -358,7 +386,7 @@ public class AgentHostImplementation
     AgentClassLoader agentclassloader =
       (AgentClassLoader)agentwrapper.getClass().getClassLoader();
 
-    agentclassloader.deconstruct();
+    agentclassloader.dispose();
 
     return repositoryentry;
   }

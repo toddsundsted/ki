@@ -61,6 +61,8 @@
   <file path="src/com/etcee/app/ki/agent/AgentIdentity.java" />
   <file path="src/com/etcee/app/ki/server/AgentLockedException.java" />
   <file path="src/com/etcee/app/ki/agenthost/AgentNotFoundException.java" />
+  <file path="src/com/etcee/app/ki/server/AgentObjectInputStream.java" />
+  <file path="src/com/etcee/app/ki/server/AgentObjectOutputStream.java" />
   <file path="src/com/etcee/app/ki/server/AgentRoot.java" />
   <file path="src/com/etcee/app/ki/server/AgentWrapper.java" />
   <file path="src/com/etcee/app/ki/ki.properties" />
@@ -77,6 +79,5 @@
   <file path="src/com/etcee/app/ki/agenthost/TransferFailedException.java" />
   <file path="src/com/etcee/app/ki/agent/TransferResponse.java" />
   <file path="src/com/etcee/app/ki/agenthost/Voucher.java" />
-  <file path="src/Wrapper.java" />
 </project>
 

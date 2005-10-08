@@ -18,9 +18,9 @@ import java.util.Hashtable;
  * This class <EM>is</EM> thread safe.
  *
  */
-
-final class AgentClassLoader
-  extends ClassLoader
+final
+class AgentClassLoader
+extends ClassLoader
 {
   /**
    * The zipfile.
@@ -28,275 +28,112 @@ final class AgentClassLoader
    * The class loader loads agent classes from the zipfile.
    *
    */
-
-  private ZipFile zipfile = null;
-
-  /**
-   * The cache.
-   *
-   * The class loader caches loaded agent classes in the hashtable.
-   *
-   */
-
-  private Hashtable hashtableClasses = new Hashtable();
-
-  /**
-   * The first time indicator.
-   *
-   * Things run a bit loosely the first time through the load.  In
-   * particular, the agent class loader can load both the wrapper
-   * class and its supertype.
-   *
-   */
-
-  private boolean boolFirstTime = true;
+  private
+  ZipFile m_zipfile = null;
 
   /**
    * Constructs the agent class loader.
    *
    */
-
   AgentClassLoader(File file)
-    throws IOException
+  throws IOException
   {
-    zipfile = new ZipFile(file);
+    m_zipfile = new ZipFile(file);
   }
 
   /**
-   * Deconstructs the agent class loader.
+   * Disposes of the agent class loader.
    *
    */
-
-  final void
-  deconstruct()
-    throws IOException
+  final
+  void
+  dispose()
+  throws IOException
   {
-    zipfile.close();
-  }
-
-  /**
-   * Transforms a classname into a filename.
-   *
-   */
-
-  private final String
-  transform(String strClassName)
-  {
-    return strClassName.replace('.', '/') + ".class";
-  }
-
-  /**
-   * Checks the package.
-   *
-   */
-
-  private final boolean
-  checkPackage(String strClassName)
-  {
-    if (strClassName.equalsIgnoreCase("com.etcee.app.ki.server.AgentRoot"))
-    {
-      return true;
-    }
-
-    if (boolFirstTime && strClassName.equalsIgnoreCase("com.etcee.app.ki.server.AgentWrapper"))
-    {
-      boolFirstTime = false;
-
-      return true;
-    }
-
-    if (strClassName.toLowerCase().startsWith("com.etcee.app.ki.agenthost") ||
-        strClassName.toLowerCase().startsWith("com.etcee.app.ki.server"))
-    {
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
-   * Loads the wrapper class.
-   *
-   * This method loads the wrapper class.  It works once.
-   *
-   */
-
-  private final Class
-  loadWrapperClass(String strClassName)
-    throws ClassNotFoundException
-  {
-    if (!boolFirstTime || !strClassName.equals(""))
-    {
-      return null;
-    }
-
-    byte [] rgb = null;
-
     try
     {
-      FileInputStream fileinputstream = new FileInputStream("lib/Wrapper.class");
-
-      int n = fileinputstream.available();
-
-      rgb = new byte [n];
-
-      fileinputstream.read(rgb);
+      if (m_zipfile != null) m_zipfile.close();
     }
-    catch (IOException ex)
+    finally
     {
-      throw new ClassNotFoundException();
+      m_zipfile = null;
     }
-
-    Class c = defineClass("Wrapper", rgb, 0, rgb.length);
-
-    return c;
   }
 
   /**
-   * Loads an agent class.
+   * Finds a class given a class name.
    *
    */
-
-  private final Class
-  loadAgentClass(String strClassName)
-    throws ClassNotFoundException
+  protected
+  final
+  Class
+  findClass(String stringClassName)
+  throws ClassNotFoundException
   {
     Class c = null;
+    if ((c = findWrapperClass(stringClassName)) != null) return c;
+    if ((c = findAgentClass(stringClassName)) != null) return c;
+    throw new ClassNotFoundException(stringClassName);
+  }
 
-    if ((c = (Class)hashtableClasses.get(strClassName)) != null)
-    {
-      return c;
-    }
-
-    String strFileName = transform(strClassName);
-
-    ZipEntry zipentry = zipfile.getEntry(strFileName);
-
-    if (zipentry == null)
-    {
-      throw new ClassNotFoundException(strClassName);
-    }
-
+  /**
+   * Finds the wrapper class.
+   *
+   */
+  private
+  final
+  Class
+  findWrapperClass(String stringClassName)
+  {
+    if (!stringClassName.equals(""))
+      return null;
+    File file = new File("lib" + File.separatorChar + "Wrapper.class");
+    if (!file.exists()) return null;
     byte [] rgb = null;
-
     try
     {
-      int n = (int)zipentry.getSize();
-
+      FileInputStream fileinputstream = new FileInputStream(file);
+      int n = (int)file.length();
       rgb = new byte [n];
-
-      InputStream inputstream = zipfile.getInputStream(zipentry);
-
       int m = 0;
-
-      while (m < n)
-      {
-        m += inputstream.read(rgb, m, n - m);
-      }
+      while (m < n) m += fileinputstream.read(rgb, m, n - m);
+      fileinputstream.close();
     }
-    catch (IOException ex)
+    catch (IOException ioexception)
     {
-      throw new ClassNotFoundException(strClassName);
-    }
-
-    c = defineClass(strClassName, rgb, 0, rgb.length);
-
-    hashtableClasses.put(strClassName, c);
-
-    return c;
-  }
-
-  /**
-   * Loads a system class.
-   *
-   */
-
-  private final Class
-  loadSystemClass(String strClassName)
-  {
-    Class c = null;
-
-    try
-    {
-      c = findSystemClass(strClassName);
-    }
-    catch (ClassNotFoundException ex)
-    {
-    }
-
-    return c;
-  }
-
-  /**
-   * Loads a class.
-   *
-   * This method handles three cases.  If the class name is the empty
-   * string (""), the class loader loads the special wrapper class
-   * used for bootstrapping the agent.  If the class name names a
-   * system class, the class loader loads the system class.
-   * Otherwise, the class loader loads the named agent class from the
-   * zipfile.
-   *
-   */
-
-  protected final synchronized Class
-  loadClass(String strClassName, boolean boolResolve)
-    throws ClassNotFoundException
-  {
-    if (!checkPackage(strClassName))
-    {
-      throw new ClassNotFoundException(strClassName);
-    }
-
-    Class c = null;
-
-    if ((c = loadWrapperClass(strClassName)) == null)
-    {
-      if ((c = loadSystemClass(strClassName)) == null)
-      {
-        if ((c = loadAgentClass(strClassName)) == null)
-        {
-          throw new ClassNotFoundException(strClassName);
-        }
-      }
-    }
-
-    if (boolResolve)
-    {
-      resolveClass(c);
-    }
-
-    return c;
-  }
-
-  /**
-   * Loads a resource.
-   *
-   */
-
-  public URL
-  getResource(String strResource)
-  {
-    return null;
-  }
-
-  /**
-   * Loads a resource.
-   *
-   */
-
-  public InputStream
-  getResourceAsStream(String strResource)
-  {
-    ZipEntry zipentry = zipfile.getEntry(strResource);
-
-    try
-    {
-      return zipentry == null ? null : zipfile.getInputStream(zipentry);
-    }
-    catch (IOException ex)
-    {
+      ioexception.printStackTrace();
       return null;
     }
+    return defineClass("Wrapper", rgb, 0, rgb.length);
+  }
+
+  /**
+   * Finds an agent class.
+   *
+   */
+  private
+  final
+  Class
+  findAgentClass(String stringClassName)
+  {
+    String stringFileName = stringClassName.replace('.', File.separatorChar) + ".class";
+    ZipEntry zipentry = m_zipfile.getEntry(stringFileName);
+    if (zipentry == null) return null;
+    byte [] rgb = null;
+    try
+    {
+      InputStream inputstream = m_zipfile.getInputStream(zipentry);
+      int n = (int)zipentry.getSize();
+      rgb = new byte [n];
+      int m = 0;
+      while (m < n) m += inputstream.read(rgb, m, n - m);
+      inputstream.close();
+    }
+    catch (IOException ioexception)
+    {
+      ioexception.printStackTrace();
+      return null;
+    }
+    return defineClass(stringClassName, rgb, 0, rgb.length);
   }
 }

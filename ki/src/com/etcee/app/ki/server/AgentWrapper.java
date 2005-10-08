@@ -20,22 +20,9 @@ import java.util.Hashtable;
 /**
  * The agent wrapper.
  *
- * The <CODE>AgentWrapper</CODE> class is the agent host facing
- * interface to an agent.  It provides thread safe access to an agent
- * and ensures that message sends and agent transfers are
- * orchestrated properly.
- *
- * The <CODE>AgentWrapper</CODE> class and a special subclass support
- * the bootstrap loading of an agent by an agent class loader.  Here's
- * how it works:
- *
- * <OL>
- * <LI>create a new agent class loader
- * <LI>using the agent class loader, create a new agent wrapper
- * <LI>initialize the agent wrapper
- * <LI>load the agent into the agent wrapper
- * <LI>initialize and/or start the agent
- * </OL>
+ * The <CODE>AgentWrapper</CODE> class is the <CODE>AgentHost</CODE> class
+ * facing interface to an agent.  It provides thread safe access to an agent
+ * and ensures that sends and transfers are conducted properly.
  *
  * This class <EM>is</EM> thread safe.
  *
@@ -43,87 +30,81 @@ import java.util.Hashtable;
  * @see load
  *
  */
-
-abstract public class AgentWrapper
+final
+class AgentWrapper
 {
   /**
    * The agent.
    *
    */
+  private
+  Agent m_agent = null;
 
-  private Agent agent = null;
+  /**
+   * Sets the agent
+   *
+   */
+  final
+  void
+  setAgent(Agent agent)
+  {
+    m_agent = agent;
+  }
 
   /**
    * Gets the agent.
    *
    */
-
-  protected final Agent
+  final
+  Agent
   getAgent()
   {
-    return agent;
+    return m_agent;
   }
 
   /**
    * The agent identity.
    *
    */
-
-  private AgentIdentity agentidentity = null;
+  private
+  AgentIdentity m_agentidentity = null;
 
   /**
    * Gets the agent identity.
    *
    */
 
-  protected final AgentIdentity
+  final
+  AgentIdentity
   getAgentIdentity()
   {
-    return agentidentity;
-  }
-
-  /**
-   * The agent host implementation.
-   *
-   */
-
-  private AgentHostImplementation agenthostimplementation = null;
-
-  /**
-   * Gets the agent host implementation.
-   *
-   */
-
-  final AgentHostImplementation
-  getAgentHostImplementation()
-  {
-    return agenthostimplementation;
+    return m_agentidentity;
   }
 
   /**
    * The server data.
    *
    */
-
-  private ServerData serverdata = null;
+  private
+  ServerData m_serverdata = null;
 
   /**
    * Gets the server data.
    *
    */
-
-  final ServerData
+  final
+  ServerData
   getServerData()
   {
-    return serverdata;
+    return m_serverdata;
   }
 
   /**
    * The target.
    *
    */
-
-  private Object objTarget = null;
+  private
+  Object m_objectTarget = null;
 
   /**
    * The method table.
@@ -131,15 +112,15 @@ abstract public class AgentWrapper
    * The method table maps message names to methods.
    *
    */
-
-  private Hashtable hashtableMethods = null;
+  private
+  Hashtable m_hashtableMethods = null;
 
   /**
    * The state.
    *
    */
-
-  private int nState = INERT;
+  private
+  int m_nState = INERT;
 
   final static int INERT = -1;
   final static int INITIALIZING = 1;
@@ -155,11 +136,11 @@ abstract public class AgentWrapper
    * Gets the state.
    *
    */
-
-  final int
+  final
+  int
   getState()
   {
-    return nState;
+    return m_nState;
   }
 
   /**
@@ -171,13 +152,11 @@ abstract public class AgentWrapper
    * @see AgentHostImplementation.resurrect
    *
    */
-
   final void
   initialize(AgentHostImplementation agenthostimplementation,
              ServerData serverdata)
   {
-    this.agenthostimplementation = agenthostimplementation;
-    this.serverdata = serverdata;
+    m_serverdata = serverdata;
   }
 
   /**
