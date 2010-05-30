@@ -20,3 +20,12 @@ Resources:
  * http://www.javaworld.com/javaworld/jw-10-1998/jw-10-howto.html Agents can think, too!
 
 (Apologies for the title of the last article.)
+
+Topography:
+
+ * without_jess - the framework without Jess dependencies/support
+ * with_jess - the framework with Jess dependencies/support
+ * v2_dev - later development on the framework
+
+Both without_jess and with_jess include compiled class files and
+sample agents.
