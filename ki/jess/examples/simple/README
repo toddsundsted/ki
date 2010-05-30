@@ -1,0 +1,3 @@
+Simple is a really trivial Java Bean that can be matched on Jess rule
+LHSs because it supports PropertyChangeListeners. This is a good
+example you can start from to build your own matchable classes.

@@ -1,0 +1,10 @@
+This is a simple example of matching Java objects on the LHS of Jess
+rules. Both Tank and Pump objects can be matched in this way. The
+script pumps.clp shows how you might use these classes. This is a
+real-time control problem; Jess is perfactly capable of monitoring and
+adjusting the tanks and pumps to keep them from exploding. To run
+this, type
+
+        java jess.Main jess/examples/pumps/pumps.clp
+
+from the Jess40/ directory.
